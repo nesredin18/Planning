@@ -56,5 +56,54 @@ namespace Todo.Interface.Controllers
         
         return BadRequest("error");
     }
+
+[HttpGet]
+public async Task<ActionResult<IEnumerable<TaskModel>>> GetAllTasks()
+{
+    var tasks = await _mediator.Send(new GetAllObjQuery());
+    return Ok(tasks);
+}
+[Authorize]
+[HttpGet("{id}")]
+public async Task<ActionResult<TaskModel>> GetTaskById(int id)
+    {
+       
+var task = await _mediator.Send(new GetObjByIdQuery(id));
+if (task == null)
+{
+return NotFound();
+}
+
+return Ok(task);
+}
+[Authorize]
+[HttpPut("{id}")]
+    public async Task<IActionResult> UpdateTask(int id, [FromBody] UpdateObjCommand command)
+    {
+
+        command.Id=id;
+
+        var result = await _mediator.Send(command);
+        if (!result)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+}
+[Authorize]
+[HttpDelete("{id}")]
+public async Task<IActionResult> DeleteTask(int id)
+{
+    var command = new DeleteObjCommand { Id = id };
+    var result = await _mediator.Send(command);
+    if (!result)
+    {
+        return NotFound();
+    }
+
+    return NoContent();
+}
+    
     }
 }

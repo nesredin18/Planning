@@ -146,3 +146,4 @@ C:\Users\haha\Desktop\asp.net\TodoApp\Todo\bin\Debug\net8.0\runtimes\win\lib\net
 C:\Users\haha\Desktop\asp.net\TodoApp\Todo\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\haha\Desktop\asp.net\TodoApp\Todo\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\haha\Desktop\asp.net\TodoApp\Todo\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\haha\Desktop\asp.net\TodoApp\Todo\obj\Debug\net8.0\Todo.sourcelink.json

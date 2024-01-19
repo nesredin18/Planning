@@ -9,7 +9,11 @@ namespace Todo.core.entity
 {
     public interface IObjRepository
     {
-        Task<int> AddObj(ObjectiveModel task);
-        
+    Task<int> AddObj(ObjectiveModel task);
+    Task<IEnumerable<ObjectiveModel>> GetAllObj();
+     Task<ObjectiveModel> GetObjById(int id);
+    Task UpdateObj(ObjectiveModel obj);
+    Task DeleteObj(ObjectiveModel obj);
+     Task<IEnumerable<ObjectiveModel>> GetObjByEmail(ApplicationUser user);
     }
 }

@@ -31,6 +31,15 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDBcontext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddCors(options => 
+{
+    options.AddPolicy("cors", builder => 
+    {
+        builder.AllowAnyOrigin()  // Allows requests from any origin
+               .AllowAnyMethod()   // Allows all HTTP methods
+               .AllowAnyHeader();  // Allows all headers
+    });
+});
 
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IObjRepository, ObjRepository>();
@@ -69,7 +78,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseCors("cors");  // Apply the CORS policy
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

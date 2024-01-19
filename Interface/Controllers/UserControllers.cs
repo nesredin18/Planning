@@ -94,14 +94,18 @@ public IActionResult GetUsername()
     var claimsIdentity = User.Identity as ClaimsIdentity;
     if (claimsIdentity != null)
     {
-        // Extract username or other claims
-    var emailClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        // Alternatively, if you've stored the username in a different claim, adjust the above line
-        return Ok(emailClaim);
+        var emailClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (emailClaim != null)
+        {
+            // Return a JSON response with the email
+            return Ok(new { Email = emailClaim });
+        }
+        return BadRequest("Email claim not found.");
     }
 
     return BadRequest("User is not authenticated.");
 }
+
 
 
 

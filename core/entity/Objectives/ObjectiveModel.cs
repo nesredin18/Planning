@@ -15,6 +15,11 @@ namespace Todo.core.entity.Objectives
         public ICollection<ApplicationUser> AppUsers { get; set; } = [];
         public ICollection<ActivityModel> Activities { get; set; } = [];
         public ICollection<TermModel> Terms { get; set; } = [];
+        public string Status { get; set; }=string.Empty;
+        public string Goal { get; set; }=string.Empty;
+        public string Result { get; set; }=string.Empty;
+        public DateTime Initial_date { get; set; }
+        public DateTime Final_date { get; set; }
     }
 
     public class ActivityModel{
@@ -23,8 +28,14 @@ namespace Todo.core.entity.Objectives
         public string Description { get; set; }=string.Empty;
         public int Objective_id { get; set; }
         public ICollection<ObjectiveModel> Objective { get; set; } = [];
-        public bool HasSubActivities { get; set; }
+        public bool HasSubActivities { get; set; }=false;
         public ICollection<SubActivityModel> SubActivities { get; set; }= [];
+        public string Status { get; set; }=string.Empty;
+        public string Goal { get; set; }=string.Empty;
+        public DateTime Initial_date { get; set; }=DateTime.Now;
+        public DateTime Final_date { get; set; }=DateTime.Now;
+        public string Result { get; set; }=string.Empty;
+        
     }
 
     public class SubActivityModel{
@@ -33,6 +44,11 @@ namespace Todo.core.entity.Objectives
         public string Description { get; set; }=string.Empty;
         public int Activity_id { get; set; } 
         public ActivityModel Activity { get; set; }= new ActivityModel();
+        public string Status { get; set; }=string.Empty;
+        public string Goal { get; set; }=string.Empty;
+        public string Result { get; set; }=string.Empty;
+        public DateTime Initial_date { get; set; }
+        public DateTime Final_date { get; set; }
 
     }
 
@@ -41,12 +57,12 @@ namespace Todo.core.entity.Objectives
         public string Name { get; set; }=string.Empty;
         public string Description { get; set; }=string.Empty;
         public int Objective_id { get; set; }
-        public DateTime initial_date { get; set; }
-        public DateTime final_date { get; set; }
-        public string goal { get; set; }=string.Empty;
-        public string result { get; set; }=string.Empty;
+        public DateTime Initial_date { get; set; }
+        public DateTime Final_date { get; set; }
+        public string Goal { get; set; }=string.Empty;
+        public string Result { get; set; }=string.Empty;
 
-        public string status { get; set; }=string.Empty;
+        public string Status { get; set; }=string.Empty;
         public ObjectiveModel Objective { get; set; }= new ObjectiveModel();
     }
 }
