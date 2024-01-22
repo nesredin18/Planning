@@ -10,7 +10,7 @@ namespace Todo.core.entity
     {
     Task<int> AddTask(TaskModel task);
     Task<IEnumerable<TaskModel>> GetAllTasks();
-     Task<TaskModel> GetTaskById(int id);
+    Task<TaskModel> GetTaskById(int id);
     Task UpdateTask(TaskModel task);
     Task DeleteTask(TaskModel task);
     }

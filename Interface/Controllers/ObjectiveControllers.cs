@@ -16,6 +16,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Todo.core.usecases.ObjectiveUse;
 using Todo.core.usecases.UserUse;
+using Todo.core.entity.Objectives;
 
 
 namespace Todo.Interface.Controllers
@@ -58,14 +59,14 @@ namespace Todo.Interface.Controllers
     }
 
 [HttpGet]
-public async Task<ActionResult<IEnumerable<TaskModel>>> GetAllTasks()
+public async Task<ActionResult<IEnumerable<ObjectiveModel>>> GetAllTasks()
 {
     var tasks = await _mediator.Send(new GetAllObjQuery());
     return Ok(tasks);
 }
 [Authorize]
 [HttpGet("{id}")]
-public async Task<ActionResult<TaskModel>> GetTaskById(int id)
+public async Task<ActionResult<ObjectiveModel>> GetTaskById(int id)
     {
        
 var task = await _mediator.Send(new GetObjByIdQuery(id));

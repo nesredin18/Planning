@@ -44,6 +44,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IObjRepository, ObjRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IActRepository, ActRepository>();
 
 
     var key = Encoding.ASCII.GetBytes("YourSuperSecretKeyMustBeVerySecretThatNoOneMustKnow"); // Replace with your secret key
