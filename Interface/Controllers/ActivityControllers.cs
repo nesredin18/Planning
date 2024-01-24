@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Todo.core.usecases.Activityuse;
 using Todo.core.usecases.ObjectiveUse;
 using Todo.core.entity.Objectives;
+using Todo.core;
 
 namespace Todo.Interface.Controllers
 {
@@ -34,6 +35,8 @@ namespace Todo.Interface.Controllers
     {
         return BadRequest("There is no Object with this Id");
     }
+    command.Initial_date = DateTimeExtensions.SetKindUtc(command.Initial_date);
+    command.Final_date=DateTimeExtensions.SetKindUtc(command.Final_date);
     command.Objectives.Add(c);
     var taskId = await _mediator.Send(command);
      return Ok(taskId);

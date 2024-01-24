@@ -63,7 +63,7 @@ public async Task<IEnumerable<ActivityModel>> GetActByObj(ObjectiveModel obj)
 
     if (objectives.Count == 0)
     {
-        throw new KeyNotFoundException($"You don't have any objectives.");
+        throw new KeyNotFoundException($"You don't have any Activites.");
     }
 
     return objectives;

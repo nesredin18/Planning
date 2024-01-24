@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Authorization;
 using Todo.core.usecases.ObjectiveUse;
 using Todo.core.usecases.UserUse;
 using Todo.core.entity.Objectives;
+using Todo.core;
 
 
 namespace Todo.Interface.Controllers
@@ -44,15 +45,17 @@ namespace Todo.Interface.Controllers
     if (claimsIdentity != null)
     {
         // Extract username or other claims
-    var emailClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-    if(emailClaim==null)
-    {
-        return BadRequest("error");
-    }
-    var c=await _mediator.Send(new GetUserByEmailQ(emailClaim));
-    command.AppUsers.Add(c);
-    var taskId = await _mediator.Send(command);
-     return Ok(taskId);
+        var emailClaim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if(emailClaim==null)
+        {
+            return BadRequest("error");
+        }
+        var c=await _mediator.Send(new GetUserByEmailQ(emailClaim));
+        command.Initial_date = DateTimeExtensions.SetKindUtc(command.Initial_date);
+        command.Final_date=DateTimeExtensions.SetKindUtc(command.Final_date);
+        command.AppUsers.Add(c);
+        var taskId = await _mediator.Send(command);
+        return Ok(taskId);
     }
         
         return BadRequest("error");
@@ -83,6 +86,8 @@ return Ok(task);
     {
 
         command.Id=id;
+        command.Initial_date = DateTimeExtensions.SetKindUtc(command.Initial_date);
+        command.Final_date=DateTimeExtensions.SetKindUtc(command.Final_date);
 
         var result = await _mediator.Send(command);
         if (!result)
