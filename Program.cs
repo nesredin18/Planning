@@ -45,6 +45,8 @@ builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<IObjRepository, ObjRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IActRepository, ActRepository>();
+builder.Services.AddScoped<ITermRepository, TermRepository>();
+builder.Services.AddScoped<IProgressRepository, ProgressRepository>();
 
 
     var key = Encoding.ASCII.GetBytes("YourSuperSecretKeyMustBeVerySecretThatNoOneMustKnow"); // Replace with your secret key

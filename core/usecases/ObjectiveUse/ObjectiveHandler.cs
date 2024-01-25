@@ -132,4 +132,37 @@ namespace Todo.core.usecases.ObjectiveUse
             return true;
         }
     }
+    public class UpdateObjTermCommandHandler : IRequestHandler<CreateObjectiveTerm, bool>
+    {
+        private readonly IObjRepository _taskRepository;
+        private readonly ITermRepository _termRepository;
+
+        public UpdateObjTermCommandHandler(IObjRepository taskRepository,ITermRepository termRepository)
+        {
+            _taskRepository = taskRepository;
+            _termRepository=termRepository;
+        }
+
+        public async Task<bool> Handle(CreateObjectiveTerm request, CancellationToken cancellationToken)
+        {
+            // Retrieve the task, update properties, and save changes
+            var task = await _termRepository.GetTermById(request.Term_Id);
+            var objtask = await _taskRepository.GetObjById(request.Id);
+            if (task == null)
+            {
+                return false;
+            }
+            if (objtask == null)
+            {
+                return false;
+            }
+
+            objtask.Terms.Add(task);
+
+            // Update other properties as necessary
+
+            await _taskRepository.UpdateObj(objtask);
+            return true;
+        }
+    }
 }

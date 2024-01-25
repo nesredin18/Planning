@@ -14,6 +14,6 @@ namespace Todo.core.entity
      Task<ActivityModel> GetActById(int id);
     Task UpdateAct(ActivityModel obj);
     Task DeleteAct(ActivityModel obj);
-     Task<IEnumerable<ActivityModel>> GetActByObj(ObjectiveModel obj);
+     Task<IEnumerable<ActivityModel>> GetActByObjId(int id);
     }
     }

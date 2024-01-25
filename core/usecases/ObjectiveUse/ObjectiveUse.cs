@@ -26,6 +26,16 @@ namespace Todo.core.usecases.ObjectiveUse
 
     
     }
+
+    public class CreateObjectiveTerm:IRequest<bool>
+    {
+
+
+        public int Id { get; set; }
+        public int Term_Id { get; set; }
+
+    
+    }
     public class GetObjByIdQuery : IRequest<ObjectiveModel>
     {
         public int Id { get; }

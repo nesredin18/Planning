@@ -34,11 +34,16 @@ namespace Todo.core.usecases.Activityuse
         Goal=request.Goal,
         Initial_date=request.Initial_date,
         Final_date=request.Final_date,
-        Result=request.Result
-        
+        Result=request.Result,
+    };
+
+        foreach (var item in request.Objective)
+        {
+ 
+            ActItem.Objective.Add(item);
+        }
 
         // Set other properties if there are any
-    };
 
 
     return await _actRepository.AddAct(ActItem);
@@ -75,6 +80,23 @@ namespace Todo.core.usecases.Activityuse
             return await _objRepository.GetActById(request.Id);
         }
     }
+
+    public class GetActByObjIdQueryHandler : IRequestHandler<GetActByObjIdQuery, IEnumerable<ActivityModel>>
+    {
+        private readonly IActRepository _objRepository;
+
+        public GetActByObjIdQueryHandler(IActRepository objRepository)
+        {
+            _objRepository = objRepository;
+        }
+
+        public async Task<IEnumerable<ActivityModel>> Handle(GetActByObjIdQuery request, CancellationToken cancellationToken)
+        {
+            return await _objRepository.GetActByObjId(request.Id);
+        }
+    }
+
+
 
     
 

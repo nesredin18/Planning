@@ -21,6 +21,8 @@ public class ApplicationDBcontext : IdentityDbContext<ApplicationUser>
         public DbSet<ActivityModel> Activities{get; set;}
         public DbSet<SubActivityModel> SubActivities{get; set;}
         public DbSet<TermModel> Terms{get; set;}
+        public DbSet<ObjectiveProgress> ObjectiveProgress{get; set;}
+        public DbSet<ActivityProgress> ActivityProgress{get; set;}
 
 
 

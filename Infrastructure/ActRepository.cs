@@ -43,6 +43,7 @@ namespace Todo.Infrastructure
         }
         return n;
     }
+ 
         public async Task UpdateAct(ActivityModel task)
     {
         // Logic to update the task in the database
@@ -55,19 +56,22 @@ namespace Todo.Infrastructure
         _context.Activities.Remove(task);
         await _context.SaveChangesAsync();
     }
-public async Task<IEnumerable<ActivityModel>> GetActByObj(ObjectiveModel obj)
+public async Task<IEnumerable<ActivityModel>> GetActByObjId(int id)
 {
-    var objectives = await _context.Activities
-                                   .Where(o => o.Objective.Any(au => au.Id == obj.Id))
-                                   .ToListAsync();
+    var activities = await _context.Activities
+        .Where(a => a.Objective.Any(o => o.Id == id))
+        .ToListAsync();
 
-    if (objectives.Count == 0)
+    return activities;
+
+    if (!activities.Any())
     {
-        throw new KeyNotFoundException($"You don't have any Activites.");
+        throw new KeyNotFoundException($"No activities found for Objective ID {id}.");
     }
 
-    return objectives;
+    return activities;
 }
+
 
 }
 }

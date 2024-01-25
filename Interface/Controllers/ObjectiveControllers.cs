@@ -98,6 +98,21 @@ return Ok(task);
         return NoContent();
 }
 [Authorize]
+[HttpPut("addterm/{id}")]
+    public async Task<IActionResult> UpdateTaskterm(int id, [FromBody] CreateObjectiveTerm command)
+    {
+
+        command.Id=id;
+
+        var result = await _mediator.Send(command);
+        if (!result)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+}
+[Authorize]
 [HttpDelete("{id}")]
 public async Task<IActionResult> DeleteTask(int id)
 {

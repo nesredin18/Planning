@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Todo.Infrastructure;
@@ -11,9 +12,11 @@ using Todo.Infrastructure;
 namespace Todo.Migrations
 {
     [DbContext(typeof(ApplicationDBcontext))]
-    partial class ApplicationDBcontextModelSnapshot : ModelSnapshot
+    [Migration("20240124115852_progressmigrations")]
+    partial class progressmigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,7 +255,7 @@ namespace Todo.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ActivityId")
+                    b.Property<int>("ActivityId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Activity_id")
@@ -344,7 +347,7 @@ namespace Todo.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ObjectiveId")
+                    b.Property<int>("ObjectiveId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Objective_id")
@@ -369,7 +372,7 @@ namespace Todo.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ActivityId")
+                    b.Property<int>("ActivityId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Activity_id")
@@ -444,9 +447,6 @@ namespace Todo.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("Weight")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -641,7 +641,9 @@ namespace Todo.Migrations
                 {
                     b.HasOne("Todo.core.entity.Objectives.ActivityModel", "Activity")
                         .WithMany("ActivityProgress")
-                        .HasForeignKey("ActivityId");
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Activity");
                 });
@@ -650,7 +652,9 @@ namespace Todo.Migrations
                 {
                     b.HasOne("Todo.core.entity.Objectives.ObjectiveModel", "Objective")
                         .WithMany("ObjectiveProgress")
-                        .HasForeignKey("ObjectiveId");
+                        .HasForeignKey("ObjectiveId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Objective");
                 });
@@ -659,7 +663,9 @@ namespace Todo.Migrations
                 {
                     b.HasOne("Todo.core.entity.Objectives.ActivityModel", "Activity")
                         .WithMany("SubActivities")
-                        .HasForeignKey("ActivityId");
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Activity");
                 });

@@ -5,10 +5,7 @@ using System.Threading.Tasks;
 
 namespace Todo.core
 {
-    public class commen
-    {
-        
-    }
+
     public static class DateTimeExtensions
 {
     public static DateTime? SetKindUtc(this DateTime? dateTime)

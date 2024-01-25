@@ -5,84 +5,60 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Todo.core.usecases.Activityuse;
-using Todo.core.usecases.ObjectiveUse;
-using Todo.core.entity.Objectives;
+using Todo.core.usecases.termuse;
 using Todo.core;
+using Todo.core.entity.Objectives;
+
 
 namespace Todo.Interface.Controllers
 {
-    [ApiController]
-    [Route("activity")]
-    public class ActivityControllers : ControllerBase
+[ApiController]
+[Route("/term")]
+    public class TermControllers:ControllerBase
     {
-         private readonly IMediator _mediator;
+        private readonly IMediator _mediator;
 
-    public ActivityControllers(IMediator mediator)
+    public TermControllers(IMediator mediator)
     {
         _mediator = mediator;
     }
     
-
+   [Authorize]
     [HttpPost]
 
     
-    public async Task<ActionResult<int>> CreateTask([FromBody] CreateAct command)
+    public async Task<ActionResult<int>> CreateTask([FromBody] CreateTerm command)
     {
 
-    var c= await _mediator.Send(new GetObjByIdQuery(command.Objective_id));
-    if(c==null)
-    {
-        return BadRequest("There is no Object with this Id");
-    }
+
     command.Initial_date = DateTimeExtensions.SetKindUtc(command.Initial_date);
     command.Final_date=DateTimeExtensions.SetKindUtc(command.Final_date);
-    command.Objective.Add(c);
     var taskId = await _mediator.Send(command);
-    
      return Ok(taskId);
     }
-        
 
 [HttpGet]
-public async Task<ActionResult<IEnumerable<ActivityModel>>> GetAllTasks()
+public async Task<ActionResult<IEnumerable<TermModel>>> GetAllTasks()
 {
-    var tasks = await _mediator.Send(new GetAllActQuery());
+    var tasks = await _mediator.Send(new GetAllTermQuery());
     return Ok(tasks);
 }
 [Authorize]
 [HttpGet("{id}")]
-public async Task<ActionResult<ActivityModel>> GetTaskById(int id)
+public async Task<ActionResult<ObjectiveModel>> GetTaskById(int id)
     {
        
-var task = await _mediator.Send(new GetActByIdQuery(id));
+var task = await _mediator.Send(new GetTermByIdQuery(id));
 if (task == null)
 {
 return NotFound();
 }
-
-
-
-return Ok(task);
-}
-
-[HttpGet("obj/{id}")]
-public async Task<ActionResult<ActivityModel>> GetTaskByObjId(int id)
-    {
-       
-var task = await _mediator.Send(new GetActByObjIdQuery(id));
-if (task == null)
-{
-return NotFound();
-}
-
-
 
 return Ok(task);
 }
 [Authorize]
 [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateTask(int id, [FromBody] UpdateActCommand command)
+    public async Task<IActionResult> UpdateTask(int id, [FromBody] UpdateTermCommand command)
     {
 
         command.Id=id;
@@ -101,7 +77,7 @@ return Ok(task);
 [HttpDelete("{id}")]
 public async Task<IActionResult> DeleteTask(int id)
 {
-    var command = new DeleteActCommand { Id = id };
+    var command = new DeleteTermCommand { Id = id };
     var result = await _mediator.Send(command);
     if (!result)
     {
@@ -110,5 +86,6 @@ public async Task<IActionResult> DeleteTask(int id)
 
     return NoContent();
 }
+    
     }
 }
