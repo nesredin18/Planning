@@ -64,12 +64,6 @@ public async Task<IEnumerable<ActivityModel>> GetActByObjId(int id)
 
     return activities;
 
-    if (!activities.Any())
-    {
-        throw new KeyNotFoundException($"No activities found for Objective ID {id}.");
-    }
-
-    return activities;
 }
 
 
