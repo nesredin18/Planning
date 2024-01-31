@@ -13,5 +13,6 @@ namespace Todo.core.entity
     Task<TermModel> GetTermById(int id);
     Task UpdateTerm(TermModel task);
     Task DeleteTerm(TermModel task);
+    Task<IEnumerable<TermModel>> GetTermByObjId(int id);
     }
 }

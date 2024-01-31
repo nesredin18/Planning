@@ -24,6 +24,9 @@ namespace Todo.core.usecases.ObjectiveUse
         public string Goal { get; set; }=string.Empty;
         public string Result { get; set; }=string.Empty;
 
+        public ICollection<TermModel> Terms { get; set; } = [];
+        public int[] Term_Id { get; set; }=[];
+
     
     }
 
@@ -57,6 +60,8 @@ public class UpdateObjCommand : IRequest<bool>
         public string Result { get; set; }=string.Empty;
         public DateTime Initial_date { get; set; }
         public DateTime Final_date { get; set; }
+        public int[] Term_Id { get; set; }=[];
+        public ICollection<TermModel> Terms { get; set; } = [];
     // Other properties...
 }
 
@@ -68,4 +73,14 @@ public class UpdateObjCommand : IRequest<bool>
         public class GetAllObjQuery : IRequest<IEnumerable<ObjectiveModel>>
     {
 }
+
+    public class GetObjByTermIdQuery : IRequest<IEnumerable<ObjectiveModel>>
+    {
+        public int Id { get; }
+
+        public GetObjByTermIdQuery(int id)
+        {
+            Id = id;
+        }
+    }
 }

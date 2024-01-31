@@ -69,5 +69,26 @@ public async Task<IEnumerable<ObjectiveModel>> GetObjByEmail(ApplicationUser use
     return objectives;
 }
 
+public async Task<IEnumerable<ObjectiveModel>> GetObjByTerm(int id)
+{
+    var objectives = await _context.Objectives
+                                   .Where(o => o.Terms.Any(t => t.Id == id))
+                                   .ToListAsync();
+
+    if (objectives.Count == 0)
+    {
+        throw new KeyNotFoundException($"You don't have any objectives.");
+    }
+
+    return objectives;
+
+
+}
+
+public async Task SaveDbAsync()
+{
+    await _context.SaveChangesAsync();
+}
+
 }
 }

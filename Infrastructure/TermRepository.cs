@@ -54,6 +54,22 @@ public class TermRepository : ITermRepository
         await _context.SaveChangesAsync();
     }
 
+public async Task<IEnumerable<TermModel>> GetTermByObjId(int objectiveId)
+{
+    var terms = await _context.Terms
+                              .Where(o => o.Objective .Any(t=>t.Id==objectiveId))
+                              .ToListAsync();
+
+
+    if (!terms.Any())
+    {
+        throw new KeyNotFoundException($"No terms found for Objective ID {objectiveId}.");
+    }
+
+    return terms;
+}
+    
+
     // Implement other methods
 }
 }

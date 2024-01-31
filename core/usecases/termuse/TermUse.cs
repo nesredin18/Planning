@@ -32,6 +32,15 @@ public class CreateTerm:IRequest<int>
             Id = id;
         }
     }
+    public class GetTermByObjIdQuery : IRequest<IEnumerable<TermModel>>
+    {
+        public int Id { get; }
+
+        public GetTermByObjIdQuery(int id)
+        {
+            Id = id;
+        }
+    }
 public class UpdateTermCommand : IRequest<bool>
 {
         public int Id { get; set; }

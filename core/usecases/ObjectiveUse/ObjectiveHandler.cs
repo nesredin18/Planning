@@ -6,6 +6,11 @@ using  Todo.core.usecases.ObjectiveUse;
 using Todo.core.entity;
 using Todo.core.entity.Objectives;
 using MediatR;
+using Todo.core.usecases.termuse;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Todo.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+
 
 
 namespace Todo.core.usecases.ObjectiveUse
@@ -40,6 +45,13 @@ namespace Todo.core.usecases.ObjectiveUse
 
         // Set other properties if there are any
     };
+
+            foreach (var item in request.Terms)
+        {
+            item.Objective.Add(ObjectItem);
+ 
+            ObjectItem.Terms.Add(item);
+        }
 
     return await _objRepository.AddObj(ObjectItem);
 }
@@ -104,10 +116,19 @@ namespace Todo.core.usecases.ObjectiveUse
         public class UpdateObjCommandHandler : IRequestHandler<UpdateObjCommand, bool>
     {
         private readonly IObjRepository _taskRepository;
+        private readonly IMediator _mediator;
+        private readonly ITermRepository _termRepository;
+        private readonly ApplicationDBcontext _context;
 
-        public UpdateObjCommandHandler(IObjRepository taskRepository)
+
+        public UpdateObjCommandHandler(IObjRepository taskRepository,IMediator mediator,ITermRepository termRepository,ApplicationDBcontext context)
         {
             _taskRepository = taskRepository;
+
+            
+            _mediator = mediator;
+            _termRepository=termRepository;
+            _context=context;
         }
 
         public async Task<bool> Handle(UpdateObjCommand request, CancellationToken cancellationToken)
@@ -125,12 +146,37 @@ namespace Todo.core.usecases.ObjectiveUse
             task.Initial_date=request.Initial_date;
             task.Final_date=request.Final_date;
             task.Result=request.Result;
+            task.Terms.Clear();
+      var existingTerms = await _termRepository.GetTermByObjId(request.Id);
+    var existingTermIds = existingTerms.Select(t => t.Id);
 
-            // Update other properties as necessary
+    // Remove terms that are no longer associated
+    var termsToRemove = existingTerms.Where(t => !request.Term_Id.Contains(t.Id)).ToList();
+    foreach (var term in termsToRemove)
+    {
+        var termToRemove = task.Terms.FirstOrDefault(t => t.Id == term.Id);
+        if (termToRemove != null)
+        {
+            task.Terms.Remove(termToRemove);
+        }
+    }
+
+    // Add new terms
+    foreach (var termId in request.Term_Id)
+    {
+        if (!existingTermIds.Contains(termId))
+        {
+            var termToAdd = await _context.Terms.FindAsync(termId);
+            if (termToAdd != null)
+            {
+                task.Terms.Add(termToAdd);
+            }
+        }
+    }
 
             await _taskRepository.UpdateObj(task);
             return true;
-        }
+    }
     }
     public class UpdateObjTermCommandHandler : IRequestHandler<CreateObjectiveTerm, bool>
     {
@@ -164,5 +210,22 @@ namespace Todo.core.usecases.ObjectiveUse
             await _taskRepository.UpdateObj(objtask);
             return true;
         }
+
     }
+
+     public class GetObjByTermIdQueryHandler : IRequestHandler<GetObjByTermIdQuery, IEnumerable<ObjectiveModel>>
+    {
+        private readonly IObjRepository _objRepository;
+
+        public GetObjByTermIdQueryHandler(IObjRepository objRepository)
+        {
+            _objRepository = objRepository;
+        }
+
+        public async Task<IEnumerable<ObjectiveModel>> Handle(GetObjByTermIdQuery request, CancellationToken cancellationToken)
+        {
+            return await _objRepository.GetObjByTerm(request.Id);
+        }
+    }
+
 }

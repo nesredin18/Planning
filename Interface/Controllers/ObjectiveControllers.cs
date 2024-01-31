@@ -18,6 +18,7 @@ using Todo.core.usecases.ObjectiveUse;
 using Todo.core.usecases.UserUse;
 using Todo.core.entity.Objectives;
 using Todo.core;
+using Todo.core.usecases.termuse;
 
 
 namespace Todo.Interface.Controllers
@@ -54,6 +55,10 @@ namespace Todo.Interface.Controllers
         command.Initial_date = DateTimeExtensions.SetKindUtc(command.Initial_date);
         command.Final_date=DateTimeExtensions.SetKindUtc(command.Final_date);
         command.AppUsers.Add(c);
+        foreach (var Item in command.Term_Id)
+        {
+            command.Terms.Add(await _mediator.Send(new GetTermByIdQuery(Item)));
+        }
         var taskId = await _mediator.Send(command);
         return Ok(taskId);
     }
@@ -88,6 +93,8 @@ return Ok(task);
         command.Id=id;
         command.Initial_date = DateTimeExtensions.SetKindUtc(command.Initial_date);
         command.Final_date=DateTimeExtensions.SetKindUtc(command.Final_date);
+        ModelState.Remove("Terms");
+ 
 
         var result = await _mediator.Send(command);
         if (!result)
@@ -103,6 +110,7 @@ return Ok(task);
     {
 
         command.Id=id;
+        
 
         var result = await _mediator.Send(command);
         if (!result)
@@ -124,6 +132,21 @@ public async Task<IActionResult> DeleteTask(int id)
     }
 
     return NoContent();
+}
+
+[HttpGet("obj/{id}")]
+public async Task<ActionResult<ActivityModel>> GetTaskByObjId(int id)
+    {
+       
+var task = await _mediator.Send(new GetObjByTermIdQuery(id));
+if (task == null)
+{
+return NotFound();
+}
+
+
+
+return Ok(task);
 }
     
     }

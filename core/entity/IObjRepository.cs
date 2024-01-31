@@ -15,5 +15,8 @@ namespace Todo.core.entity
     Task UpdateObj(ObjectiveModel obj);
     Task DeleteObj(ObjectiveModel obj);
      Task<IEnumerable<ObjectiveModel>> GetObjByEmail(ApplicationUser user);
+    // Task<int> AddTermToObj(TermModel term);
+     Task<IEnumerable<ObjectiveModel>> GetObjByTerm(int id);
+     Task SaveDbAsync();
     }
 }

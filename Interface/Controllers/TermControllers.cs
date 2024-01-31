@@ -56,6 +56,19 @@ return NotFound();
 
 return Ok(task);
 }
+
+[HttpGet("get/{id}")]
+public async Task<ActionResult<ObjectiveModel>> GettermById(int id)
+    {
+       
+var task = await _mediator.Send(new GetTermByObjIdQuery(id));
+if (task == null)
+{
+return NotFound();
+}
+
+return Ok(task);
+}
 [Authorize]
 [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTask(int id, [FromBody] UpdateTermCommand command)

@@ -73,6 +73,22 @@ namespace Todo.core.usecases.termuse
         }
     }
 
+     public class GetTermByObjIdQueryHandler : IRequestHandler<GetTermByObjIdQuery, IEnumerable<TermModel>>
+    {
+        private readonly ITermRepository _objRepository;
+
+        public GetTermByObjIdQueryHandler(ITermRepository objRepository)
+        {
+            _objRepository = objRepository;
+        }
+        
+
+        public async Task<IEnumerable<TermModel>> Handle(GetTermByObjIdQuery request, CancellationToken cancellationToken)
+        {
+            return await _objRepository.GetTermByObjId(request.Id);
+        }
+    }
+
     
 
     public class DeleteTermCommandHandler : IRequestHandler<DeleteTermCommand, bool>
